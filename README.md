@@ -49,11 +49,11 @@ tx.commit();
  - JPQL 쿼리 실행 - 플러시 자동 호출 (쿼리 실행 후 조회할 때 반영이 안되면 문제가 생길 수 있기때문)
  
 ### 준영속 상태
-- 일단 1차 캐시에 올라간 상태가 영속 상태이다.
-- find해서 1차캐시에 없어 DB에서 가져와 1차 캐시에 들어가면 영속상태가 된다.
-- 영속 -> 준영속
-- 영속 상태의 Entity가 영속성 컨텍스트에서 분리(detached)
-- 영속성 컨텍스트 기능을 사용 못함
+ - 일단 1차 캐시에 올라간 상태가 영속 상태이다.
+ - find해서 1차캐시에 없어 DB에서 가져와 1차 캐시에 들어가면 영속상태가 된다.
+ - 영속 -> 준영속
+ - 영속 상태의 Entity가 영속성 컨텍스트에서 분리(detached)
+ - 영속성 컨텍스트 기능을 사용 못함
 ```java
 // 1차캐시에 들어와 영속상태가 됨
 Member member = em.find(Member.class, 150L);
@@ -66,5 +66,25 @@ em.detach(member);
 em.clear();
 ```
  
- ## 3. 연관관계 매핑 기초
+ ## 3. Entity 매핑
+ 1. DB 스키마 자동 생성7
+ - 운영 장비에는 절대 create, create-drop, update 사용하면 안된다.
+ - 개발 초기단계는 create 또는 update
+ - 테스트 서버는 update 또는 validate
+ - 스테이징과 운영 서버는 validate 또는 none
+ 
+ 2. DDL 생성기능 
+ - DDL 생성 기능은 DDL을 자도 ㅇ생성할 때만 사용되고 JPA의 실행 로직에는 영향을 주지 않는다.
+ - @Column(unique = true, nullable = false, length = 10) 뭐 이런것
+ 
+ 3. 필드와 컬럼 매핑
+ - @Enumerated : STRING, ORDINAL
+ - @Temporal : DATE, TIME, TIMESTAMP
+ - @Lob : 제한없이 글쓰는 경우, 문자(String)면 CLOB, 나머지는 BLOB
+ - @Transient : DB와 관계없이 메모리에서만 쓰고싶을때 
+ 
+ 4. 기본 키 매핑
+ - GenerationType.IDENTITY : auto increment와 같다. 
+ - 기본 키 권장 : Long형 + 대체키(auto increment), 비지니스 로직과 전혀 관계없는 키 권장
+ 
  
