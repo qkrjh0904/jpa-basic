@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 
-@Entity
+//@Entity
 @Getter
 @Setter
 public class Member {
